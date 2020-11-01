@@ -1,4 +1,5 @@
 import random
+from tabulate import tabulate
 
 mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0],
@@ -12,26 +13,41 @@ mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 
-def vypis(sachovnica, riadky, stlpce):
-    for i in range(riadky):
-        for j in range(stlpce):
-            print(sachovnica[i][j], end=" ")
-        print("\n")
+def HaD_posun(pole, riadky, stlpce, y, x, cislo):
+    if cislo != riadky - 1 and pole[y + 1][x] == 0:
+        for i in range(y + 1, riadky):
+            if pole[i][x] == 0:
+                pole[i][x] = cislo
+            else:
+                break
+    elif cislo != 0 and pole[y - 1][x] == 0:
+        for i in range(1, (y + 1)):
+            if pole[y - i][x] == 0:
+                pole[y - i][x] = cislo
+            else:
+                break
+    else:
+        return
 
 
 def RaL_posun(pole, riadky, stlpce, y, x, cislo):
+    print(y)
     if cislo != (riadky + stlpce - 1) and pole[y][x + 1] == 0:
         for i in range(x + 1, stlpce):
             if pole[y][i] == 0:
-                pole[y][i] = 88
+                pole[y][i] = cislo
             else:
+                HaD_posun(pole, riadky, stlpce, y, i - 1, cislo)
                 break
     elif cislo != 10 and pole[y][x - 1] == 0:
-        for i in range(x - 1, 0):
-            if pole[y][i] == 0:
-                pole[y][i] = i
+        for i in range(0, x - 1):
+            if pole[y][x - i] == 0:
+                pole[y][x - i] = -cislo
             else:
+                HaD_posun(pole, riadky, stlpce, y, x - i, cislo)
                 break
+    else:
+        return
 
 
 def posun_fitness(population, riadky, stlpce):
@@ -42,11 +58,12 @@ def posun_fitness(population, riadky, stlpce):
                 if new_mapa[i][j] == 0:
                     new_mapa[i][j] = i
                 else:
+                    HaD_posun(new_mapa, riadky, stlpce, i, j - 1, i)
                     break
         if i > 9:
-            for j in range(0, riadky):
-                if new_mapa[9 - j][i - 10] == 0:
-                    new_mapa[9 - j][i - 10] = i
+            for j in range(1, (riadky + 1)):
+                if new_mapa[riadky - j][i - 10] == 0:
+                    new_mapa[riadky - j][i - 10] = i
                 else:
                     """
                     if i != 21 and new_mapa[riadky - j][i - 9] == 0:
@@ -61,10 +78,12 @@ def posun_fitness(population, riadky, stlpce):
                     else:
                         break
                     """
-                    RaL_posun(new_mapa, riadky, stlpce, riadky - j, i - 10, i)
+                    print(i, j)
+                    if j != 1:
+                        RaL_posun(new_mapa, riadky, stlpce, riadky - j + 1, i - 10, i)
                     break
 
-    vypis(new_mapa, riadky, stlpce)
+    print(tabulate(new_mapa))
 
 
 if __name__ == "__main__":

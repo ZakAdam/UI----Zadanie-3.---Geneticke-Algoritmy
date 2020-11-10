@@ -25,7 +25,7 @@ class Gene:                                                     #TODO pozor na t
             self.smer = "Up"
             self.x = start - riadky - 1
             self.y = riadky - 1
-        elif riadky + stlpce + riadky < start < riadky + stlpce + riadky + stlpce:
+        elif riadky + stlpce + riadky < start <= riadky + stlpce + riadky + stlpce:
             self.smer = "Down"
             self.x = stlpce - (start - riadky*2 - stlpce)
             self.y = 0
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     print(stlpce)
     number_of_genes = riadky + stlpce  # TODO add aj geny pre kamene
     genes = []
-    for i in range(0, (riadky + stlpce) * 2):
+    for i in range(0, (riadky + stlpce) * 2 + 1):
         genes.append(i)
     population = random.sample(genes, number_of_genes)
     print(population)

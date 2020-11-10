@@ -68,7 +68,7 @@ if __name__ == "__main__":
     print(stlpce)
     number_of_genes = riadky + stlpce  # TODO add aj geny pre kamene
     genes = []
-    for i in range(0, (riadky + stlpce) * 2 + 1):
+    for i in range(1, (riadky + stlpce) * 2 + 1):
         genes.append(i)
     population = random.sample(genes, number_of_genes)
     print(population)

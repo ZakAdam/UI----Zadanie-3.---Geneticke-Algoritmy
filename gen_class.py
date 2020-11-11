@@ -32,3 +32,16 @@ class Gene:                                                     #TODO pozor na t
 
     def get_posun(self):
         return self.x_posun, self.y_posun
+
+    def set_smer(self, smer):
+        self.smer = smer
+
+    def set_suradnice(self, x, y):
+        self.x = x
+        self.y = y
+
+    def set_x_posun(self, hodnota):
+        self.x_posun = self.x_posun + hodnota
+
+    def set_y_posun(self, hodnota):
+        self.y_posun = self.y_posun + hodnota

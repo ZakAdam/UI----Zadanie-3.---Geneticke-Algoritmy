@@ -14,7 +14,23 @@ mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 
+def naraz(gen, mapa):
+    smer = gen.get_smer()
+    if smer == "Up" or smer == "Down":
+        if smer == "Up":
+            suradnice = gen.get_posun()
+            if suradnice[0] < (stlpce - 1) and mapa[suradnice[1] - 1][suradnice[0] + 1] == 0:
+                print("SOMMMMM TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n")
+                gen.set_smer("Right")
+                gen.set_y_posun(1)
+                #gen.x_posun = gen.x_posun + 1
+                return True
+    else:
+        return False
+
+
 def posun(gen):
+    """
     if gen.get_smer() == "Up":
         gen.y_posun = gen.y_posun - 1
     elif gen.get_smer() == "Down":
@@ -23,6 +39,15 @@ def posun(gen):
         gen.x_posun = gen.x_posun + 1
     elif gen.get_smer() == "Left":
         gen.x_posun = gen.x_posun - 1
+    """
+    if gen.get_smer() == "Up":
+        gen.set_y_posun(-1)
+    elif gen.get_smer() == "Down":
+        gen.set_y_posun(1)
+    elif gen.get_smer() == "Right":
+        gen.set_x_posun(1)
+    elif gen.get_smer() == "Left":
+        gen.set_x_posun(-1)
 
 
 def check(gen):
@@ -43,7 +68,11 @@ def hrabanie(population):
         suradnice = gen.get_posun()
         while check(gen):
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
-                break
+                if not naraz(gen, new_mapa):
+                    break
+                else:
+                    posun(gen)
+                    suradnice = gen.get_posun()
             print("New suradnice su: " + str(suradnice[0]) + " - " + str(suradnice[1]))
             new_mapa[suradnice[1]][suradnice[0]] = i
             posun(gen)

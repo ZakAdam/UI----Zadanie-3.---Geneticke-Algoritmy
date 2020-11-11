@@ -19,26 +19,43 @@ def naraz(gen, mapa):
     if smer == "Up" or smer == "Down":
         if smer == "Up":
             suradnice = gen.get_posun()
-            if suradnice[0] < (stlpce - 1) and mapa[suradnice[1] - 1][suradnice[0] + 1] == 0:
+            if suradnice[0] < (stlpce - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:
                 print("SOMMMMM TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n")
                 gen.set_smer("Right")
                 gen.set_y_posun(1)
-                #gen.x_posun = gen.x_posun + 1
                 return True
             elif suradnice[0] > 0 and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
                 print("LAVICCCCCCCCAAAAAA")
                 gen.set_smer("Left")
                 gen.set_y_posun(1)
                 return True
+        else:
+            suradnice = gen.get_posun()
+            if 0 < suradnice[0] and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
+                print("Down do lava\n")
+                gen.set_smer("Left")
+                gen.set_y_posun(-1)
+                return True
+            elif suradnice[0] < (stlpce - 1) and mapa[suradnice[1] - 1][suradnice[0] + 1] == 0:
+                gen.set_smer("Right")
+                gen.set_y_posun(-1)
+                return True
+
+
 
     else:
         if smer == "Right":
             suradnice = gen.get_posun()
-            if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] - 1] == 0:
+            if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
                 print("SOm v Right posune ne hore")
                 gen.set_smer("Up")
                 gen.set_x_posun(-1)
                 return True
+            else:
+                if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] - 1] == 0:
+                    gen.set_smer("Down")
+                    gen.set_x_posun(-1)
+                    return True
 
         else:
             return False

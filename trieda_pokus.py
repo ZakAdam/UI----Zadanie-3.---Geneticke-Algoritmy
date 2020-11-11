@@ -1,4 +1,5 @@
 import random
+import gen_class
 from tabulate import tabulate
 
 mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -12,51 +13,41 @@ mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-"""
-def check(poloha):
-    if 0 <= poloha < riadky and 0 < poloha < stlpce:
-"""
+
+def posun(gen):
+    if gen.get_smer() == "Up":
+        gen.y_posun = gen.y_posun - 1
+    elif gen.get_smer() == "Down":
+        gen.y_posun = gen.y_posun + 1
+    elif gen.get_smer() == "Right":
+        gen.x_posun = gen.x_posun + 1
+    elif gen.get_smer() == "Left":
+        gen.x_posun = gen.x_posun - 1
 
 
-class Gene:                                                     #TODO pozor na ten 0ty riadok pre Y a X
-    def __init__(self, start):
-        self.start = start
-        if riadky < start <= stlpce + riadky:
-            self.smer = "Up"
-            self.x = start - riadky - 1
-            self.y = riadky - 1
-        elif riadky + stlpce + riadky < start <= riadky + stlpce + riadky + stlpce:
-            self.smer = "Down"
-            self.x = stlpce - (start - riadky*2 - stlpce)
-            self.y = 0
-        elif start <= riadky:
-            self.smer = "Right"
-            self.x = 0
-            self.y = start - 1
-        elif riadky + stlpce < start <= riadky + stlpce + riadky:
-            self.smer = "Left"
-            self.x = stlpce - 1
-            self.y = riadky - (start - riadky - stlpce)
-        else:
-            self.smer = "Noneeeee"
-            self.x = 0
-            self.y = 0
-
-    def get_smer(self):
-        return self.smer
-
-    def get_suradnice(self):
-        return self.x, self.y
+def check(gen):
+    if 0 <= gen.x_posun < stlpce and 0 <= gen.y_posun < riadky:
+        return True
+    return False
 
 
-def hrabanie(population, riadok, stlpec):
+def hrabanie(population):
     new_mapa = mapa
-    print("druha stena --> " + str(riadok + stlpec))
+    print("druha stena --> " + str(riadky + stlpce))
     for i in population:
-        gen = Gene(i)
+        gen = gen_class.Gene(i, riadky, stlpce)
         suradnice = gen.get_suradnice()
         print(str(i) + "  ---  " + gen.get_smer() + "  ---  " + str(suradnice[0]) + " , " + str(suradnice[1]))
         new_mapa[suradnice[1]][suradnice[0]] = i
+        posun(gen)
+        suradnice = gen.get_posun()
+        while check(gen):
+            if new_mapa[suradnice[1]][suradnice[0]] != 0:
+                break
+            print("New suradnice su: " + str(suradnice[0]) + " - " + str(suradnice[1]))
+            new_mapa[suradnice[1]][suradnice[0]] = i
+            posun(gen)
+            suradnice = gen.get_posun()
 
     print(tabulate(new_mapa))
 
@@ -72,5 +63,5 @@ if __name__ == "__main__":
         genes.append(i)
     population = random.sample(genes, number_of_genes)
     print(population)
-    hrabanie(population, riadky, stlpce)
+    hrabanie(population)
 

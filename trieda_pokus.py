@@ -20,58 +20,58 @@ def naraz(gen, mapa):
         if smer == "Up":
             suradnice = gen.get_posun()
             if suradnice[0] < (stlpce - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:
-                print("SOMMMMM TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n")
                 gen.set_smer("Right")
                 gen.set_y_posun(1)
-                return True
-            elif suradnice[0] > 0 and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
-                print("LAVICCCCCCCCAAAAAA")
+                return 1
+            elif suradnice[0] > 0 and mapa[suradnice[1] + 1][suradnice[0] - 1] == 0:
                 gen.set_smer("Left")
                 gen.set_y_posun(1)
-                return True
+                return 1
+
         else:
             suradnice = gen.get_posun()
             if 0 < suradnice[0] and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
-                print("Down do lava\n")
                 gen.set_smer("Left")
                 gen.set_y_posun(-1)
-                return True
+                return 1
             elif suradnice[0] < (stlpce - 1) and mapa[suradnice[1] - 1][suradnice[0] + 1] == 0:
                 gen.set_smer("Right")
                 gen.set_y_posun(-1)
-                return True
-
-
+                return 1
+        if suradnice[0] == (stlpce - 1) or suradnice[0] == 0:  # pripad, že je to bod na hranici
+            return 2
 
     else:
         if smer == "Right":
             suradnice = gen.get_posun()
             if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
-                print("SOm v Right posune ne hore")
                 gen.set_smer("Up")
                 gen.set_x_posun(-1)
-                return True
+                return 1
             else:
                 if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] - 1] == 0:
                     gen.set_smer("Down")
                     gen.set_x_posun(-1)
-                    return True
+                    return 1
 
         else:
-            return False
+            suradnice = gen.get_posun()
+            if suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:   #Left - Left
+                gen.set_smer("Down")
+                gen.set_x_posun(1)
+                return 1
+            else:
+                if 0 < suradnice[1] and mapa[suradnice[1] - 1][suradnice[0] + 1] == 0:
+                    gen.set_smer("Up")
+                    gen.set_x_posun(1)
+                    return 1
+        if suradnice[1] == (riadky - 1) or suradnice[1] == 0:            # pripad, že je to bod na hranici
+            return 2
+
+    return 3
 
 
 def posun(gen):
-    """
-    if gen.get_smer() == "Up":
-        gen.y_posun = gen.y_posun - 1
-    elif gen.get_smer() == "Down":
-        gen.y_posun = gen.y_posun + 1
-    elif gen.get_smer() == "Right":
-        gen.x_posun = gen.x_posun + 1
-    elif gen.get_smer() == "Left":
-        gen.x_posun = gen.x_posun - 1
-    """
     if gen.get_smer() == "Up":
         gen.set_y_posun(-1)
     elif gen.get_smer() == "Down":
@@ -90,26 +90,40 @@ def check(gen):
 
 def hrabanie(population):
     new_mapa = mapa
-    print("druha stena --> " + str(riadky + stlpce))
+    koniec = False
     for i in population:
         gen = gen_class.Gene(i, riadky, stlpce)
         suradnice = gen.get_suradnice()
-        print(str(i) + "  ---  " + gen.get_smer() + "  ---  " + str(suradnice[0]) + " , " + str(suradnice[1]))
+        if new_mapa[suradnice[1]][suradnice[0]] != 0:
+            continue
         new_mapa[suradnice[1]][suradnice[0]] = i
+        print(i)
         posun(gen)
         suradnice = gen.get_posun()
         while check(gen):
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
-                if not naraz(gen, new_mapa):
+                value = naraz(gen, new_mapa)
+                if value == 3:
+                    print("Tento gen nenasiel cestu von :(  --> " + str(i))
+                    koniec = True
                     break
-                else:
+                elif value == 1:
                     posun(gen)
                     suradnice = gen.get_posun()
-            print("New suradnice su: " + str(suradnice[0]) + " - " + str(suradnice[1]))
+                else:
+                    break
             new_mapa[suradnice[1]][suradnice[0]] = i
             posun(gen)
             suradnice = gen.get_posun()
+        if koniec:
+            break
 
+    fitness = 0
+    for i in range(0, riadky):
+        for j in range(0, stlpce):
+            if new_mapa[i][j] != 0:
+                fitness += 1
+    print("Fitness danho jedinca je: " + str(fitness))
     print(tabulate(new_mapa))
 
 

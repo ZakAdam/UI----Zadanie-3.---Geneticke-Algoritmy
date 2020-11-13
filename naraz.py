@@ -3,7 +3,8 @@ def naraz(gen, mapa, riadky, stlpce):
     if smer == "Up" or smer == "Down":
         if smer == "Up":
             suradnice = gen.get_posun()
-            if gen.get_odbocenie:
+            if gen.get_odbocenie():
+                print("nieeeee")
                 if suradnice[0] < (stlpce - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:
                     gen.set_smer("Right")
                     gen.set_y_posun(1)
@@ -15,6 +16,7 @@ def naraz(gen, mapa, riadky, stlpce):
                 if gen.y_posun + 1 == riadky - 1:
                     return 2
             else:
+                print("Moreeeeeeeeeee")
                 if suradnice[0] > 0 and mapa[suradnice[1] + 1][suradnice[0] - 1] == 0:
                     gen.set_smer("Left")
                     gen.set_y_posun(1)
@@ -28,7 +30,7 @@ def naraz(gen, mapa, riadky, stlpce):
 
         else:
             suradnice = gen.get_posun()
-            if gen.get_odbocenie:
+            if gen.get_odbocenie():
                 if 0 < suradnice[0] and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
                     gen.set_smer("Left")
                     gen.set_y_posun(-1)
@@ -56,7 +58,7 @@ def naraz(gen, mapa, riadky, stlpce):
     else:
         if smer == "Right":
             suradnice = gen.get_posun()
-            if gen.get_odbocenie:
+            if gen.get_odbocenie():
                 if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
                     gen.set_smer("Up")
                     gen.set_x_posun(-1)
@@ -81,7 +83,7 @@ def naraz(gen, mapa, riadky, stlpce):
 
         else:
             suradnice = gen.get_posun()
-            if gen.get_odbocenie:
+            if gen.get_odbocenie():
                 if suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:   #Left - Left
                     gen.set_smer("Down")
                     gen.set_x_posun(1)

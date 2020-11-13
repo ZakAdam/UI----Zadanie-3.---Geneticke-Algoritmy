@@ -124,6 +124,9 @@ def hrabanie(population, riadky, stlpce, fitness_zoznam):
     koniec = False
     for i in range(0, len(population)):
         gen = population[i]
+        print(gen.start)
+        if gen.get_odbocenie():
+            print("Looool")
         suradnice = gen.get_suradnice()
         if new_mapa[suradnice[1]][suradnice[0]] != 0:
             continue
@@ -233,6 +236,7 @@ def main():
         tmp = []
         for l in population:
             sanca = random.random()
+            print(sanca)
             tmp.append(gen_class.Gene(l, riadky, stlpce, sanca))
         print(tmp)
         zoznam_objektov[j] = hrabanie(tmp, riadky, stlpce, fitness_zoznam)

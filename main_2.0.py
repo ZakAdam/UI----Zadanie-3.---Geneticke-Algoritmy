@@ -129,7 +129,6 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
                 value = naraz.naraz(gen, new_mapa, riadky, stlpce)
                 if value == 3:
-                    #print("Tento gen nenasiel cestu von :(  --> " + str(gen.start))
                     koniec = True
                     break
                 elif value == 1:
@@ -148,14 +147,11 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
         for j in range(0, stlpce):
             if new_mapa[i][j] != 0:
                 fitness += 1
-    #print("Fitness danho jedinca je: " + str(fitness))
     if fitness == riadky * stlpce:
         print(tabulate(new_mapa))
         print("NASIEL SI ODPOVED!!!")
         exit(0)
     fitness_zoznam.append(fitness)
-    #print(tabulate(new_mapa))
-    #print(population)
     return population
 
 
@@ -174,7 +170,8 @@ def main():
     for i in range(1, number_of_genes * 2 + 1):
         genes.append(i)
     for j in range(0, pocet_jedincov):
-        population = random.sample(genes, number_of_genes)
+        #population = random.sample(genes, number_of_genes)
+        population = random.sample(genes, 30)
         tmp = []
         for l in population:
             sanca = random.random()
@@ -196,32 +193,7 @@ def main():
     print(fitness_zoznam)
     print("\nMax. prvok: " + str(max) + " Min. prvok " + str(min) + " primer " + str(sum/pocet_jedincov))
 
-    """
-    prvy_rodic = turnaj(fitness_zoznam)
-    print(prvy_rodic)
-    druhy_rodic = turnaj(fitness_zoznam)
-    print(druhy_rodic)
-    print(zoznam_objektov)
-    print(zoznam_objektov.get(prvy_rodic))
-    print(zoznam_objektov.get(druhy_rodic))
-    deti = krizenie(zoznam_objektov.get(prvy_rodic), zoznam_objektov.get(druhy_rodic))
-    print(deti[0])
-    print(deti[1])
-    """
     new_population = {}
-    """
-    j = 0
-    for i in range(0, int(pocet_jedincov/2)):
-        prvy_rodic = turnaj(fitness_zoznam)
-        druhy_rodic = turnaj(fitness_zoznam)
-        deti = krizenie(zoznam_objektov.get(prvy_rodic), zoznam_objektov.get(druhy_rodic))
-        new_population[j] = deti[0]
-        new_population[j+1] = (deti[1])
-        j += 2
-    """
-
-    #print(new_population.get(0)[1].get_suradnice())
-    #hrabanie_2(new_population[0], riadky, stlpce, fitness_zoznam)
 
     for k in range(1, pocet_generacii):
         new_population.clear()

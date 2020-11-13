@@ -40,12 +40,17 @@ class Gene:                                                     # TODO pozor na 
     def set_smer(self, smer):
         self.smer = smer
 
+    """
     def set_suradnice(self, x, y):
         self.x = x
         self.y = y
-
+    """
     def set_x_posun(self, hodnota):
         self.x_posun = self.x_posun + hodnota
 
     def set_y_posun(self, hodnota):
         self.y_posun = self.y_posun + hodnota
+
+    def reset_posun(self, x, y):
+        self.x_posun = x
+        self.y_posun = y

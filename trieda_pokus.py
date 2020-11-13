@@ -174,15 +174,18 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
     for i in range(0, len(population)):
         gen = population[i]
         gen.set_smer(gen.povodny_smer)
-        gen.set_x_posun(gen.x)
-        gen.set_y_posun(gen.y)
+        gen.reset_posun(gen.x, gen.y)
         suradnice = gen.get_suradnice()
+        print(suradnice)
+        print(gen.get_posun())
         if new_mapa[suradnice[1]][suradnice[0]] != 0:
             continue
         new_mapa[suradnice[1]][suradnice[0]] = gen.start
         posun(gen)
         suradnice = gen.get_posun()
+        print(suradnice)
         while check(gen, riadky, stlpce):
+            print("mo")
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
                 value = naraz(gen, new_mapa, riadky, stlpce)
                 if value == 3:

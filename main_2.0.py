@@ -1,4 +1,4 @@
-import random
+import naraz
 import gen_class
 from tabulate import tabulate
 from copy import deepcopy
@@ -37,7 +37,7 @@ def krizenie(prvy_rodic, druhy_rodic):
 
     return prve_dieta, druhe_dieta
 
-
+"""
 def naraz(gen, mapa, riadky, stlpce):
     smer = gen.get_smer()
     if smer == "Up" or smer == "Down":
@@ -99,6 +99,7 @@ def naraz(gen, mapa, riadky, stlpce):
             return 2
 
     return 3
+"""
 
 
 def posun(gen):
@@ -131,7 +132,7 @@ def hrabanie(population, riadky, stlpce, fitness_zoznam):
         suradnice = gen.get_posun()
         while check(gen, riadky, stlpce):
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
-                value = naraz(gen, new_mapa, riadky, stlpce)
+                value = naraz.naraz(gen, new_mapa, riadky, stlpce)
                 if value == 3:
                     print("Tento gen nenasiel cestu von :(  --> " + str(gen.start))
                     print("Suradnice su: " + str(gen.x) + str(gen.y))
@@ -182,7 +183,7 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
         while check(gen, riadky, stlpce):
             print("mo")
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
-                value = naraz(gen, new_mapa, riadky, stlpce)
+                value = naraz.naraz(gen, new_mapa, riadky, stlpce)
                 if value == 3:
                     print("Tento gen nenasiel cestu von :(  --> " + str(gen.start))
                     koniec = True
@@ -231,7 +232,8 @@ def main():
         population = random.sample(genes, number_of_genes)
         tmp = []
         for l in population:
-            tmp.append(gen_class.Gene(l, riadky, stlpce))
+            sanca = random.random()
+            tmp.append(gen_class.Gene(l, riadky, stlpce, sanca))
         print(tmp)
         zoznam_objektov[j] = hrabanie(tmp, riadky, stlpce, fitness_zoznam)
 
@@ -275,7 +277,7 @@ def main():
 
     """
     for i in range(1, pocet_generacii):
-        population
+        
 
         for j in range(0, pocet_jedincov):
             zoznam_objektov[j] = hrabanie(population, riadky, stlpce, fitness_zoznam)

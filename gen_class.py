@@ -1,5 +1,5 @@
 class Gene:                                                     # TODO pozor na ten 0ty riadok pre Y a X
-    def __init__(self, start, riadky, stlpce):
+    def __init__(self, start, riadky, stlpce, sanca):
         self.start = start
         if riadky < start <= stlpce + riadky:
             self.smer = "Up"
@@ -28,6 +28,11 @@ class Gene:                                                     # TODO pozor na 
         self.x_posun = self.x
         self.y_posun = self.y
 
+        if sanca > 0.5:
+            self.odbocenie = True
+        else:
+            self.odbocenie = False
+
     def get_smer(self):
         return self.smer
 
@@ -40,11 +45,6 @@ class Gene:                                                     # TODO pozor na 
     def set_smer(self, smer):
         self.smer = smer
 
-    """
-    def set_suradnice(self, x, y):
-        self.x = x
-        self.y = y
-    """
     def set_x_posun(self, hodnota):
         self.x_posun = self.x_posun + hodnota
 
@@ -54,3 +54,6 @@ class Gene:                                                     # TODO pozor na 
     def reset_posun(self, x, y):
         self.x_posun = x
         self.y_posun = y
+
+    def get_odbocenie(self):
+        return self.odbocenie

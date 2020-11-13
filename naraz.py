@@ -107,3 +107,11 @@ def naraz(gen, mapa, riadky, stlpce):
             return 2
 
     return 3
+
+
+def backtracking(mapa, delete, riadky, stlpce):
+    for i in range(0, riadky):
+        for j in range(0, stlpce):
+            if mapa[i][j] == delete:
+                mapa[i][j] = 0
+    return mapa

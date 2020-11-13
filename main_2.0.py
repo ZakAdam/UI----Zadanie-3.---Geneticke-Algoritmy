@@ -38,12 +38,15 @@ def krizenie(prvy_rodic, druhy_rodic):
 
 
 def mutation(jedinec, mutation_rate, obvod, riadky, stlpce):
+    sum = 0
     for i in range(0, len(jedinec)):
         if random.random() < mutation_rate:
             nahrada = random.randint(0, obvod)
             sanca = random.random()
             new = gen_class.Gene(nahrada, riadky, stlpce, sanca)
             jedinec[i] = new
+            sum += 1
+    print("Pocet mutacii je: " + str(sum))
     return jedinec
 
 
@@ -129,7 +132,8 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
                 value = naraz.naraz(gen, new_mapa, riadky, stlpce)
                 if value == 3:
-                    koniec = True
+                    #koniec = True
+                    new_mapa = naraz.backtracking(new_mapa, gen.start, riadky, stlpce)
                     break
                 elif value == 1:
                     posun(gen)
@@ -139,8 +143,8 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
             new_mapa[suradnice[1]][suradnice[0]] = gen.start
             posun(gen)
             suradnice = gen.get_posun()
-        if koniec:
-            break
+        #if koniec:
+            #break
 
     fitness = 0
     for i in range(0, riadky):

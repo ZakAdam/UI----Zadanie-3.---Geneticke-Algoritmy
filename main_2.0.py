@@ -29,6 +29,8 @@ def turnaj(zoznam_fitness):
 
 
 def krizenie(prvy_rodic, druhy_rodic):
+    split_point = random.randint(1, len(prvy_rodic) - 1)
+    """
     prve_pomocne = druhy_rodic[len(druhy_rodic)//2:]
     druhe_pomocne = prvy_rodic[len(prvy_rodic)//2:]
 
@@ -36,6 +38,15 @@ def krizenie(prvy_rodic, druhy_rodic):
     druhe_dieta = druhy_rodic[:len(druhy_rodic) // 2] + druhe_pomocne
 
     return prve_dieta, druhe_dieta
+    """
+    prve_pomocne = druhy_rodic[split_point:]
+    druhe_pomocne = prvy_rodic[split_point:]
+
+    prve_dieta = prvy_rodic[:split_point] + prve_pomocne
+    druhe_dieta = druhy_rodic[:split_point] + druhe_pomocne
+
+    return prve_dieta, druhe_dieta
+
 
 """
 def naraz(gen, mapa, riadky, stlpce):
@@ -219,6 +230,7 @@ def main():
     stlpce = len(mapa[0])
     pocet_jedincov = 20
     pocet_generacii = 100
+    mutation_chance = 0.3
     fitness_zoznam = []
     zoznam_objektov = {}
     print(riadky)
@@ -295,6 +307,11 @@ def main():
         for key in new_population:
             zoznam_objektov[j] = hrabanie_2(new_population[key], riadky, stlpce, fitness_zoznam)
             j += 1
+            for l in (0, number_of_genes):
+                sanca = random.random()
+                #if sanca < mutation_chance:
+
+
 
         max = fitness_zoznam[0]
         min = fitness_zoznam[0]

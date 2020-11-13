@@ -21,10 +21,10 @@ def turnaj(zoznam_fitness):
     second = random.randint(0, len(zoznam_fitness) - 1)
 
     if zoznam_fitness[first] > zoznam_fitness[second]:
-        print("Prvy je: " + str(zoznam_fitness[first]) + " Druhy je: " + str(zoznam_fitness[second]) + " vrateny je prvy")
+        #print("Prvy je: " + str(zoznam_fitness[first]) + " Druhy je: " + str(zoznam_fitness[second]) + " vrateny je prvy")
         return first
     else:
-        print("Prvy je: " + str(zoznam_fitness[first]) + " Druhy je: " + str(zoznam_fitness[second]) + " vrateny je druhyyyyyyy")
+        #print("Prvy je: " + str(zoznam_fitness[first]) + " Druhy je: " + str(zoznam_fitness[second]) + " vrateny je druhyyyyyyy")
         return second
 
 
@@ -175,20 +175,16 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
         gen.set_smer(gen.povodny_smer)
         gen.reset_posun(gen.x, gen.y)
         suradnice = gen.get_suradnice()
-        print(suradnice)
-        print(gen.get_posun())
         if new_mapa[suradnice[1]][suradnice[0]] != 0:
             continue
         new_mapa[suradnice[1]][suradnice[0]] = gen.start
         posun(gen)
         suradnice = gen.get_posun()
-        print(suradnice)
         while check(gen, riadky, stlpce):
-            print("mo")
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
                 value = naraz.naraz(gen, new_mapa, riadky, stlpce)
                 if value == 3:
-                    print("Tento gen nenasiel cestu von :(  --> " + str(gen.start))
+                    #print("Tento gen nenasiel cestu von :(  --> " + str(gen.start))
                     koniec = True
                     break
                 elif value == 1:
@@ -207,14 +203,14 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
         for j in range(0, stlpce):
             if new_mapa[i][j] != 0:
                 fitness += 1
-    print("Fitness danho jedinca je: " + str(fitness))
+    #print("Fitness danho jedinca je: " + str(fitness))
     if fitness == riadky * stlpce:
         print(tabulate(new_mapa))
         print("NASIEL SI ODPOVED!!!")
         exit(0)
     fitness_zoznam.append(fitness)
-    print(tabulate(new_mapa))
-    print(population)
+    #print(tabulate(new_mapa))
+    #print(population)
     return population
 
 
@@ -254,6 +250,7 @@ def main():
     print(fitness_zoznam)
     print("\nMax. prvok: " + str(max) + " Min. prvok " + str(min) + " primer " + str(sum/pocet_jedincov))
 
+    """
     prvy_rodic = turnaj(fitness_zoznam)
     print(prvy_rodic)
     druhy_rodic = turnaj(fitness_zoznam)
@@ -264,8 +261,9 @@ def main():
     deti = krizenie(zoznam_objektov.get(prvy_rodic), zoznam_objektov.get(druhy_rodic))
     print(deti[0])
     print(deti[1])
-
+    """
     new_population = {}
+    """
     j = 0
     for i in range(0, int(pocet_jedincov/2)):
         prvy_rodic = turnaj(fitness_zoznam)
@@ -274,18 +272,43 @@ def main():
         new_population[j] = deti[0]
         new_population[j+1] = (deti[1])
         j += 2
-
-
-    print(new_population.get(0)[1].get_suradnice())
-    hrabanie_2(new_population[0], riadky, stlpce, fitness_zoznam)
-
     """
-    for i in range(1, pocet_generacii):
-        
 
-        for j in range(0, pocet_jedincov):
-            zoznam_objektov[j] = hrabanie(population, riadky, stlpce, fitness_zoznam)
-    """
+    #print(new_population.get(0)[1].get_suradnice())
+    #hrabanie_2(new_population[0], riadky, stlpce, fitness_zoznam)
+
+    for k in range(1, pocet_generacii):
+        new_population.clear()
+        #new_population = {}
+        j = 0
+        for i in range(0, int(pocet_jedincov / 2)):
+            prvy_rodic = turnaj(fitness_zoznam)
+            druhy_rodic = turnaj(fitness_zoznam)
+            deti = krizenie(zoznam_objektov.get(prvy_rodic), zoznam_objektov.get(druhy_rodic))
+            new_population[j] = deti[0]
+            new_population[j + 1] = (deti[1])
+            j += 2
+
+        zoznam_objektov.clear()
+        fitness_zoznam.clear()
+        j = 0
+        for key in new_population:
+            zoznam_objektov[j] = hrabanie_2(new_population[key], riadky, stlpce, fitness_zoznam)
+            j += 1
+
+        max = fitness_zoznam[0]
+        min = fitness_zoznam[0]
+        sum = 0
+        for value in fitness_zoznam:
+            if value > max:
+                max = value
+            elif value < min:
+                min = value
+            sum += value
+
+        print(fitness_zoznam)
+        print("\nGenerácia č.: " + str(k) + " Max. prvok: " + str(max) + " Min. prvok " + str(min) + " primer " + str(
+            sum / pocet_jedincov))
 
 
 if __name__ == "__main__":

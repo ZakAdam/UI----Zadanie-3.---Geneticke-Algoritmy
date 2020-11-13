@@ -28,7 +28,7 @@ class Gene:                                                     # TODO pozor na 
         self.x_posun = self.x
         self.y_posun = self.y
 
-        if sanca > 0.5:
+        if sanca > 0.49:
             self.odbocenie = True
         else:
             self.odbocenie = False

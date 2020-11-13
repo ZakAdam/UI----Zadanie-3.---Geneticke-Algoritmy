@@ -21,24 +21,13 @@ def turnaj(zoznam_fitness):
     second = random.randint(0, len(zoznam_fitness) - 1)
 
     if zoznam_fitness[first] > zoznam_fitness[second]:
-        #print("Prvy je: " + str(zoznam_fitness[first]) + " Druhy je: " + str(zoznam_fitness[second]) + " vrateny je prvy")
         return first
     else:
-        #print("Prvy je: " + str(zoznam_fitness[first]) + " Druhy je: " + str(zoznam_fitness[second]) + " vrateny je druhyyyyyyy")
         return second
 
 
 def krizenie(prvy_rodic, druhy_rodic):
     split_point = random.randint(1, len(prvy_rodic) - 1)
-    """
-    prve_pomocne = druhy_rodic[len(druhy_rodic)//2:]
-    druhe_pomocne = prvy_rodic[len(prvy_rodic)//2:]
-
-    prve_dieta = prvy_rodic[:len(prvy_rodic) // 2] + prve_pomocne
-    druhe_dieta = druhy_rodic[:len(druhy_rodic) // 2] + druhe_pomocne
-
-    return prve_dieta, druhe_dieta
-    """
     prve_pomocne = druhy_rodic[split_point:]
     druhe_pomocne = prvy_rodic[split_point:]
 
@@ -48,69 +37,14 @@ def krizenie(prvy_rodic, druhy_rodic):
     return prve_dieta, druhe_dieta
 
 
-"""
-def naraz(gen, mapa, riadky, stlpce):
-    smer = gen.get_smer()
-    if smer == "Up" or smer == "Down":
-        if smer == "Up":
-            suradnice = gen.get_posun()
-            if suradnice[0] < (stlpce - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:
-                gen.set_smer("Right")
-                gen.set_y_posun(1)
-                return 1
-            if suradnice[0] > 0 and mapa[suradnice[1] + 1][suradnice[0] - 1] == 0:
-                gen.set_smer("Left")
-                gen.set_y_posun(1)
-                return 1
-            if gen.y_posun - 1 == riadky - 1:
-                return 2
-
-        else:
-            suradnice = gen.get_posun()
-            if 0 < suradnice[0] and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
-                gen.set_smer("Left")
-                gen.set_y_posun(-1)
-                return 1
-            if suradnice[0] < (stlpce - 1) and mapa[suradnice[1] - 1][suradnice[0] + 1] == 0:
-                gen.set_smer("Right")
-                gen.set_y_posun(-1)
-                return 1
-            if gen.y_posun - 1 == 0:
-                return 2
-        if suradnice[0] == (stlpce - 1) or suradnice[0] == 0:  # pripad, že je to bod na hranici
-            return 2
-
-    else:
-        if smer == "Right":
-            suradnice = gen.get_posun()
-            if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] - 1][suradnice[0] - 1] == 0:
-                gen.set_smer("Up")
-                gen.set_x_posun(-1)
-                return 1
-            if 0 < suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] - 1] == 0:
-                gen.set_smer("Down")
-                gen.set_x_posun(-1)
-                return 1
-            if gen.x_posun - 1 == 0:
-                return 2
-
-        else:
-            suradnice = gen.get_posun()
-            if suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:   #Left - Left
-                gen.set_smer("Down")
-                gen.set_x_posun(1)
-                return 1
-            if 0 < suradnice[1] and mapa[suradnice[1] - 1][suradnice[0] + 1] == 0:
-                gen.set_smer("Up")
-                gen.set_x_posun(1)
-                return 1
-            if gen.x_posun - 1 == stlpce - 1:                      # hranicny stav
-                return 2
-        if suradnice[1] == (riadky - 1) or suradnice[1] == 0:   # pripad, že je to bod na hranici
-            return 2
-
-    return 3
-"""
+def mutation(jedinec, mutation_rate, obvod, riadky, stlpce):
+    for i in range(0, len(jedinec)):
+        if random.random() < mutation_rate:
+            nahrada = random.randint(0, obvod)
+            sanca = random.random()
+            new = gen_class.Gene(nahrada, riadky, stlpce, sanca)
+            jedinec[i] = new
+    return jedinec
 
 
 def posun(gen):
@@ -306,10 +240,12 @@ def main():
         j = 0
         for key in new_population:
             zoznam_objektov[j] = hrabanie_2(new_population[key], riadky, stlpce, fitness_zoznam)
+            sanca = random.random()
+            if sanca < mutation_chance:
+                #print(zoznam_objektov[j])
+                zoznam_objektov[j] = mutation(zoznam_objektov[j], 0.15, len(genes), riadky, stlpce)
+                #print(zoznam_objektov[j])
             j += 1
-            for l in (0, number_of_genes):
-                sanca = random.random()
-                #if sanca < mutation_chance:
 
 
 

@@ -4,6 +4,7 @@ from tabulate import tabulate
 from copy import deepcopy
 import random
 
+"""
 mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0],
         [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -14,6 +15,24 @@ mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+"""
+
+with open("mapa.txt") as f:
+    mapa = [[int(num) for num in line.split(",")] for line in f]
+
+
+with open("config_file.txt") as file:
+    for line in file:
+        riadok = line.strip()
+        i = 1
+        cislo = riadok[0]
+        while riadok[i].isdigit():
+            cislo = str(cislo) + str(riadok[i])
+            i += 1
+        print(cislo)
+
+    print("------------------------------------------------")
+
 
 
 def turnaj(zoznam_fitness):
@@ -24,6 +43,16 @@ def turnaj(zoznam_fitness):
         return first
     else:
         return second
+
+
+def ruleta(zoznam_fitness):
+    hranica = sum(zoznam_fitness) * random.random()
+    sucet = 0
+    for i in range(0, len(zoznam_fitness)):
+        sucet = sucet + zoznam_fitness[i]
+        if sucet > hranica:
+            return i
+    return random.randint(0, len(zoznam_fitness) - 1)
 
 
 def krizenie(prvy_rodic, druhy_rodic):
@@ -38,15 +67,12 @@ def krizenie(prvy_rodic, druhy_rodic):
 
 
 def mutation(jedinec, mutation_rate, obvod, riadky, stlpce):
-    sum = 0
     for i in range(0, len(jedinec)):
         if random.random() < mutation_rate:
             nahrada = random.randint(0, obvod)
             sanca = random.random()
             new = gen_class.Gene(nahrada, riadky, stlpce, sanca)
             jedinec[i] = new
-            sum += 1
-    print("Pocet mutacii je: " + str(sum))
     return jedinec
 
 
@@ -199,13 +225,20 @@ def main():
 
     new_population = {}
 
+
+##########################################################################################################
     for k in range(1, pocet_generacii):
         new_population.clear()
         #new_population = {}
         j = 0
         for i in range(0, int(pocet_jedincov / 2)):
-            prvy_rodic = turnaj(fitness_zoznam)
-            druhy_rodic = turnaj(fitness_zoznam)
+            ruleta(fitness_zoznam)
+            #prvy_rodic = turnaj(fitness_zoznam)                    # TODO dorobit prepinanie
+            #druhy_rodic = turnaj(fitness_zoznam)
+
+            prvy_rodic = ruleta(fitness_zoznam)
+            druhy_rodic = ruleta(fitness_zoznam)
+
             deti = krizenie(zoznam_objektov.get(prvy_rodic), zoznam_objektov.get(druhy_rodic))
             new_population[j] = deti[0]
             new_population[j + 1] = (deti[1])

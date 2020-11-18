@@ -22,6 +22,7 @@ with open("mapa.txt") as f:
 
 
 with open("config_file.txt") as file:
+    zaznamy = []
     for line in file:
         riadok = line.strip()
         i = 1
@@ -30,9 +31,21 @@ with open("config_file.txt") as file:
             cislo = str(cislo) + str(riadok[i])
             i += 1
         print(cislo)
+        zaznamy.append(cislo)
 
     print("------------------------------------------------")
-
+    print(zaznamy)
+    pocet_generacii = int(zaznamy[0])
+    pocet_jedincov = int(zaznamy[1])
+    typ_krizenia = int(zaznamy[2])
+    vyber_rodicov = int(zaznamy[3])
+    cislo = "0." + zaznamy[4]
+    mutation_chance = float(cislo)
+    cislo = "0." + zaznamy[5]
+    swap_rate = float(cislo)
+    cislo = "0." + zaznamy[6]
+    mutation_rate = float(cislo)
+    print("------------------------------------------------")
 
 
 def turnaj(zoznam_fitness):
@@ -51,6 +64,8 @@ def ruleta(zoznam_fitness):
     for i in range(0, len(zoznam_fitness)):
         sucet = sucet + zoznam_fitness[i]
         if sucet > hranica:
+            print(hranica)
+            print(i)
             return i
     return random.randint(0, len(zoznam_fitness) - 1)
 
@@ -66,13 +81,18 @@ def krizenie(prvy_rodic, druhy_rodic):
     return prve_dieta, druhe_dieta
 
 
-def mutation(jedinec, mutation_rate, obvod, riadky, stlpce):
+def mutation(jedinec, obvod, riadky, stlpce):
     for i in range(0, len(jedinec)):
-        if random.random() < mutation_rate:
+        nahoda = random.random()
+        if nahoda < mutation_rate:
             nahrada = random.randint(0, obvod)
             sanca = random.random()
             new = gen_class.Gene(nahrada, riadky, stlpce, sanca)
             jedinec[i] = new
+
+        if nahoda < swap_rate:
+            druhy = random.randint(0, len(jedinec) - 1)
+            jedinec[i], jedinec[druhy] = jedinec[druhy], jedinec[i]
     return jedinec
 
 
@@ -188,9 +208,10 @@ def hrabanie_2(population, riadky, stlpce, fitness_zoznam):
 def main():
     riadky = len(mapa)
     stlpce = len(mapa[0])
-    pocet_jedincov = 20
-    pocet_generacii = 100
-    mutation_chance = 0.3
+    #pocet_jedincov = 20
+    #pocet_generacii = 100
+    #mutation_chance = 0.3
+    print(mutation_rate)
     fitness_zoznam = []
     zoznam_objektov = {}
     print(riadky)
@@ -232,12 +253,13 @@ def main():
         #new_population = {}
         j = 0
         for i in range(0, int(pocet_jedincov / 2)):
-            ruleta(fitness_zoznam)
-            #prvy_rodic = turnaj(fitness_zoznam)                    # TODO dorobit prepinanie
-            #druhy_rodic = turnaj(fitness_zoznam)
+            if vyber_rodicov == 1:
+                prvy_rodic = turnaj(fitness_zoznam)
+                druhy_rodic = turnaj(fitness_zoznam)
 
-            prvy_rodic = ruleta(fitness_zoznam)
-            druhy_rodic = ruleta(fitness_zoznam)
+            else:
+                prvy_rodic = ruleta(fitness_zoznam)
+                druhy_rodic = ruleta(fitness_zoznam)
 
             deti = krizenie(zoznam_objektov.get(prvy_rodic), zoznam_objektov.get(druhy_rodic))
             new_population[j] = deti[0]
@@ -252,7 +274,7 @@ def main():
             sanca = random.random()
             if sanca < mutation_chance:
                 #print(zoznam_objektov[j])
-                zoznam_objektov[j] = mutation(zoznam_objektov[j], 0.15, len(genes), riadky, stlpce)
+                zoznam_objektov[j] = mutation(zoznam_objektov[j], len(genes), riadky, stlpce)
                 #print(zoznam_objektov[j])
             j += 1
 

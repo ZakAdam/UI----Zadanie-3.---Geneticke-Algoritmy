@@ -88,6 +88,8 @@ def krizenie(prvy_rodic, druhy_rodic):
     else:
         split_point1 = random.randint(1, len(prvy_rodic) - 1)
         split_point2 = random.randint(1, len(prvy_rodic) - 1)
+        if split_point1 > split_point2:
+            split_point1, split_point2 = split_point2, split_point1
         prve_dieta = []
         druhe_dieta = []
         for i in range(0, len(prvy_rodic)):
@@ -223,7 +225,6 @@ def main():
 
 
 ##########################################################################################################
-    #for k in range(1, pocet_generacii):
     k = 1
     generacia = 1
     while k <= pocet_generacii:

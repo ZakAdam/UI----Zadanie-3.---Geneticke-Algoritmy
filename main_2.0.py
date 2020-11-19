@@ -149,55 +149,13 @@ def check(gen):
     return False
 
 
-def hrabanie(population, fitness_zoznam):
-    new_mapa = deepcopy(mapa)
-    koniec = False
-    for i in range(0, len(population)):
-        gen = population[i]
-        suradnice = gen.get_suradnice()
-        if new_mapa[suradnice[1]][suradnice[0]] != 0:
-            continue
-        new_mapa[suradnice[1]][suradnice[0]] = gen.start
-        posun(gen)
-        suradnice = gen.get_posun()
-        while check(gen):
-            if new_mapa[suradnice[1]][suradnice[0]] != 0:
-                value = naraz.naraz(gen, new_mapa, riadky, stlpce)
-                if value == 3:
-                    new_mapa = naraz.backtracking(new_mapa, gen.start, riadky, stlpce)
-                    break
-                elif value == 1:
-                    posun(gen)
-                    suradnice = gen.get_posun()
-                else:
-                    break
-            new_mapa[suradnice[1]][suradnice[0]] = gen.start
-            posun(gen)
-            suradnice = gen.get_posun()
-        if koniec:
-            break
-
-    fitness = 0
-    for i in range(0, riadky):
-        for j in range(0, stlpce):
-            if new_mapa[i][j] != 0:
-                fitness += 1
-    print("Fitness danho jedinca je: " + str(fitness))
-    if fitness == riadky * stlpce:
-        print(tabulate(new_mapa))
-        print("NASIEL SI ODPOVED!!!")
-        exit(0)
-    fitness_zoznam.append(fitness)
-    print(tabulate(new_mapa))
-    return population
-
-
-def hrabanie_2(population, fitness_zoznam):
+def hrabanie(population, fitness_zoznam, volanie):
     new_mapa = deepcopy(mapa)
     for i in range(0, len(population)):
         gen = population[i]
-        gen.set_smer(gen.povodny_smer)
-        gen.reset_posun(gen.x, gen.y)
+        if volanie == 2:
+            gen.set_smer(gen.povodny_smer)
+            gen.reset_posun(gen.x, gen.y)
         suradnice = gen.get_suradnice()
         if new_mapa[suradnice[1]][suradnice[0]] != 0:
             continue
@@ -245,7 +203,8 @@ def main():
         for l in population:
             sanca = random.random()
             tmp.append(gen_class.Gene(l, riadky, stlpce, sanca))
-        zoznam_objektov[j] = hrabanie(tmp, fitness_zoznam)
+        #zoznam_objektov[j] = hrabanie(tmp, fitness_zoznam)
+        zoznam_objektov[j] = hrabanie(tmp, fitness_zoznam, 1)
 
     maximum = fitness_zoznam[0]
     minimum = fitness_zoznam[0]
@@ -264,7 +223,10 @@ def main():
 
 
 ##########################################################################################################
-    for k in range(1, pocet_generacii):
+    #for k in range(1, pocet_generacii):
+    k = 1
+    generacia = 1
+    while k <= pocet_generacii:
         new_population.clear()
         j = 0
         for i in range(0, int(pocet_jedincov / 2) - 1):
@@ -288,7 +250,7 @@ def main():
         fitness_zoznam.clear()
         j = 0
         for key in new_population:
-            zoznam_objektov[j] = hrabanie_2(new_population[key], fitness_zoznam)
+            zoznam_objektov[j] = hrabanie(new_population[key], fitness_zoznam, 2)
             sanca = random.random()
             if sanca < mutation_chance:
                 zoznam_objektov[j] = mutation(zoznam_objektov[j], len(genes))
@@ -305,9 +267,18 @@ def main():
                 minimum = value
             sumacia += value
 
-        print("\nGenerácia č.: " + str(k) + " Max. prvok: " + str(maximum) + " Min. prvok " + str(minimum) +
+        print("\nGenerácia č.: " + str(generacia) + " Max. prvok: " + str(maximum) + " Min. prvok " + str(minimum) +
               " primer " + str(sumacia / pocet_jedincov))
         print(fitness_zoznam)
+
+        if k == pocet_generacii:
+            dalej = input("\n\nChcete pokracovat dalsich " + str(pocet_generacii) + " generacii?")
+            if dalej == "1":
+                k = 0
+            else:
+                exit(0)
+        k += 1
+        generacia += 1
 
 
 if __name__ == "__main__":

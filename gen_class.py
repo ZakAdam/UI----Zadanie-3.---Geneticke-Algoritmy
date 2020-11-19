@@ -21,10 +21,6 @@ class Gene:                                                     # TODO pozor na 
             self.povodny_smer = "Left"
             self.x = stlpce - 1
             self.y = riadky - (start - riadky - stlpce)
-        else:
-            self.smer = "Noneeeee"                              # TODO, asi do preč ne?
-            self.x = 0
-            self.y = 0
         self.x_posun = self.x
         self.y_posun = self.y
 

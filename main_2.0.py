@@ -4,18 +4,6 @@ from tabulate import tabulate
 from copy import deepcopy
 import random
 
-"""
-mapa = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0],
-        [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-"""
 
 with open("mapa.txt") as f:
     mapa = [[int(num) for num in line.split(",")] for line in f]
@@ -102,15 +90,15 @@ def krizenie(prvy_rodic, druhy_rodic):
         split_point2 = random.randint(1, len(prvy_rodic) - 1)
         prve_dieta = []
         druhe_dieta = []
-        for i in range(0, len(prvy_rodic) - 1):
+        for i in range(0, len(prvy_rodic)):
             if i < split_point1 or i > split_point2:
                 prve_dieta.append(prvy_rodic[i])
                 druhe_dieta.append(druhy_rodic[i])
             else:
                 prve_dieta.append(druhy_rodic[i])
                 druhe_dieta.append(prvy_rodic[i])
-        prve_dieta.append(gen_class.Gene(random.randint(1, 44), 10, 12, random.random()))
-        druhe_dieta.append(gen_class.Gene(random.randint(1, 44), 10, 12, random.random()))
+        #prve_dieta.append(gen_class.Gene(random.randint(1, 44), 10, 12, random.random()))
+        #druhe_dieta.append(gen_class.Gene(random.randint(1, 44), 10, 12, random.random()))
         return prve_dieta, druhe_dieta
 
 
@@ -166,9 +154,6 @@ def hrabanie(population, fitness_zoznam):
     koniec = False
     for i in range(0, len(population)):
         gen = population[i]
-        print(gen.start)
-        if gen.get_odbocenie():
-            print("Looool")
         suradnice = gen.get_suradnice()
         if new_mapa[suradnice[1]][suradnice[0]] != 0:
             continue
@@ -179,11 +164,6 @@ def hrabanie(population, fitness_zoznam):
             if new_mapa[suradnice[1]][suradnice[0]] != 0:
                 value = naraz.naraz(gen, new_mapa, riadky, stlpce)
                 if value == 3:
-                    """
-                    print("Tento gen nenasiel cestu von :(  --> " + str(gen.start))
-                    print("Suradnice su: " + str(gen.x) + str(gen.y))
-                    koniec = True
-                    """
                     new_mapa = naraz.backtracking(new_mapa, gen.start, riadky, stlpce)
                     break
                 elif value == 1:
@@ -264,9 +244,7 @@ def main():
         tmp = []
         for l in population:
             sanca = random.random()
-            print(sanca)
             tmp.append(gen_class.Gene(l, riadky, stlpce, sanca))
-        print(tmp)
         zoznam_objektov[j] = hrabanie(tmp, fitness_zoznam)
 
     maximum = fitness_zoznam[0]
@@ -327,9 +305,9 @@ def main():
                 minimum = value
             sumacia += value
 
-        print(fitness_zoznam)
         print("\nGenerácia č.: " + str(k) + " Max. prvok: " + str(maximum) + " Min. prvok " + str(minimum) +
               " primer " + str(sumacia / pocet_jedincov))
+        print(fitness_zoznam)
 
 
 if __name__ == "__main__":

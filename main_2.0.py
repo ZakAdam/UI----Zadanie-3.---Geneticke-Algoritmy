@@ -43,6 +43,8 @@ with open("config_file.txt") as file:
     swap_rate = float(cislo)
     cislo = "0." + zaznamy[7]
     mutation_rate = float(cislo)
+    cislo = "0." + zaznamy[8]
+    otocenie = float(cislo)
     print("------------------------------------------------")
 
 
@@ -117,6 +119,9 @@ def mutation(jedinec, obvod):
         if nahoda < swap_rate:
             druhy = random.randint(0, len(jedinec) - 1)
             jedinec[i], jedinec[druhy] = jedinec[druhy], jedinec[i]
+
+        if nahoda < otocenie:
+            jedinec[i].odbocenie = not jedinec[i].odbocenie
     return jedinec
 
 
@@ -132,6 +137,9 @@ def mutation_2(jedinec, obvod):
     if nahoda < swap_rate:
         druhy = random.randint(0, len(jedinec) - 1)
         jedinec[pozicia], jedinec[druhy] = jedinec[druhy], jedinec[pozicia]
+
+    if nahoda < otocenie:
+        jedinec[pozicia].odbocenie = not jedinec[pozicia].odbocenie
     return jedinec
 
 

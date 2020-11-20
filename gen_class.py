@@ -1,4 +1,4 @@
-class Gene:                                                     # TODO pozor na ten 0ty riadok pre Y a X
+class Gene:
     def __init__(self, start, riadky, stlpce, sanca):
         self.start = start
         if riadky < start <= stlpce + riadky:
@@ -24,7 +24,7 @@ class Gene:                                                     # TODO pozor na 
         self.x_posun = self.x
         self.y_posun = self.y
 
-        if sanca > 0.49:
+        if sanca > 0.5:
             self.odbocenie = True
         else:
             self.odbocenie = False

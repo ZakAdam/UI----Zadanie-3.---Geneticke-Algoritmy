@@ -38,9 +38,10 @@ with open("config_file.txt") as file:
     vyber_rodicov = int(zaznamy[3])
     cislo = "0." + zaznamy[4]
     mutation_chance = float(cislo)
-    cislo = "0." + zaznamy[5]
-    swap_rate = float(cislo)
+    typ_mutacie = int(zaznamy[5])
     cislo = "0." + zaznamy[6]
+    swap_rate = float(cislo)
+    cislo = "0." + zaznamy[7]
     mutation_rate = float(cislo)
     print("------------------------------------------------")
 
@@ -205,7 +206,6 @@ def main():
         for l in population:
             sanca = random.random()
             tmp.append(gen_class.Gene(l, riadky, stlpce, sanca))
-        #zoznam_objektov[j] = hrabanie(tmp, fitness_zoznam)
         zoznam_objektov[j] = hrabanie(tmp, fitness_zoznam, 1)
 
     maximum = fitness_zoznam[0]
@@ -245,7 +245,6 @@ def main():
             j += 2
 
         nova_krv(new_population, number_of_genes * 2, j)
-        #nova_krv(new_population, number_of_genes * 2 + 1, riadky, stlpce, j + 1)
 
         zoznam_objektov.clear()
         fitness_zoznam.clear()
@@ -254,8 +253,10 @@ def main():
             zoznam_objektov[j] = hrabanie(new_population[key], fitness_zoznam, 2)
             sanca = random.random()
             if sanca < mutation_chance:
-                zoznam_objektov[j] = mutation(zoznam_objektov[j], len(genes))
-                #zoznam_objektov[j] = mutation_2(zoznam_objektov[j], len(genes), riadky, stlpce)
+                if typ_mutacie == 1:
+                    zoznam_objektov[j] = mutation_2(zoznam_objektov[j], len(genes))
+                else:
+                    zoznam_objektov[j] = mutation(zoznam_objektov[j], len(genes))
             j += 1
 
         maximum = fitness_zoznam[0]

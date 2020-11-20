@@ -82,7 +82,7 @@ def naraz(gen, mapa, riadky, stlpce):
         else:
             suradnice = gen.get_posun()
             if gen.get_odbocenie():
-                if suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:   #Left - Left
+                if suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:
                     gen.set_smer("Down")
                     gen.set_x_posun(1)
                     return 1
@@ -97,7 +97,7 @@ def naraz(gen, mapa, riadky, stlpce):
                     gen.set_smer("Up")
                     gen.set_x_posun(1)
                     return 1
-                if suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:   #Left - Left
+                if suradnice[1] < (riadky - 1) and mapa[suradnice[1] + 1][suradnice[0] + 1] == 0:
                     gen.set_smer("Down")
                     gen.set_x_posun(1)
                     return 1

@@ -14,7 +14,6 @@ with open("mapa.txt") as f:
         for p in range(0, stlpce):
             if mapa[h][p] < 0:
                 kamene += 1
-    print(kamene)
     pocet_genov = riadky + stlpce + kamene
 
 
@@ -27,11 +26,8 @@ with open("config_file.txt") as file:
         while riadok[g].isdigit():
             cislo = str(cislo) + str(riadok[g])
             g += 1
-        print(cislo)
         zaznamy.append(cislo)
 
-    print("------------------------------------------------")
-    print(zaznamy)
     pocet_generacii = int(zaznamy[0])
     pocet_jedincov = int(zaznamy[1])
     typ_krizenia = int(zaznamy[2])
@@ -45,7 +41,6 @@ with open("config_file.txt") as file:
     mutation_rate = float(cislo)
     cislo = "0." + zaznamy[8]
     otocenie = float(cislo)
-    print("------------------------------------------------")
 
 
 def turnaj(zoznam_fitness):
@@ -102,8 +97,6 @@ def krizenie(prvy_rodic, druhy_rodic):
             else:
                 prve_dieta.append(druhy_rodic[i])
                 druhe_dieta.append(prvy_rodic[i])
-        #prve_dieta.append(gen_class.Gene(random.randint(1, 44), 10, 12, random.random()))
-        #druhe_dieta.append(gen_class.Gene(random.randint(1, 44), 10, 12, random.random()))
         return prve_dieta, druhe_dieta
 
 
@@ -195,7 +188,7 @@ def hrabanie(population, fitness_zoznam, volanie):
                 fitness += 1
     if fitness == riadky * stlpce:
         print(tabulate(new_mapa))
-        print("NASIEL SI ODPOVED!!!")
+        print("PODARILO SA NAJST ODPOVED :)")
         exit(0)
     fitness_zoznam.append(fitness)
     return population
@@ -211,9 +204,9 @@ def main():
     for j in range(0, pocet_jedincov):
         population = random.sample(genes, pocet_genov)
         tmp = []
-        for l in population:
+        for v in population:
             sanca = random.random()
-            tmp.append(gen_class.Gene(l, riadky, stlpce, sanca))
+            tmp.append(gen_class.Gene(v, riadky, stlpce, sanca))
         zoznam_objektov[j] = hrabanie(tmp, fitness_zoznam, 1)
 
     maximum = fitness_zoznam[0]
